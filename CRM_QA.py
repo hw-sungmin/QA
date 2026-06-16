@@ -94,7 +94,7 @@ def select_first_franchise():
         )
         franchise = driver.find_element(By.CSS_SELECTOR, franchise_selector)
         franchise.click()
-        print("2번째 프랜차이즈 선택 완료")
+        print("프랜차이즈 선택 완료")
 
     except (NoSuchElementException, TimeoutException):
         print("!!!!! 프랜차이즈 선택 관련 오류 발생 !!!!!")
@@ -126,7 +126,7 @@ time.sleep(1)
 # endregion
 
 # region [센터 변경]
-center_selector = "body > div.relative.bg-\(--netural-gray-scale-white\).h-screen.flex > div.shrink-0 > nav > button > div:nth-child(2) > p"
+center_sele_xpath = "//p[normalize-space()='변경']"
 center_xpath = "//button[.//p[text()='APT 강북점']]"  #검증 시 변경 항목 (테스트 환경에 맞는 지점명)
 #센터 변경
 def select_center():
@@ -134,9 +134,9 @@ def select_center():
     try:
         wait_count += 1
         WebDriverWait(driver, 10).until(
-            EC.presence_of_all_elements_located((By.CSS_SELECTOR, center_selector))
+            EC.presence_of_all_elements_located((By.XPATH, center_sele_xpath))
         )
-        center = driver.find_element(By.CSS_SELECTOR, center_selector)
+        center = driver.find_element(By.XPATH, center_sele_xpath)
         center.click()
         print("센터 변경 선택 완료")
         time.sleep(1)
@@ -177,36 +177,40 @@ time.sleep(1)
 # endregion
 
 # region [센터 정보 : 공지사항]
-center_info_selector = "body > div.relative.bg-\(--netural-gray-scale-white\).h-screen.flex > div.shrink-0 > nav > div.as-scroll-area.flex.flex-col.grow.shrink.basis-0.min-h-0 > div > div > ul > div > div:nth-child(2) > details:nth-child(1) > a:nth-child(2) > li"
-center_kiosk_notice_selector = "body > div.relative.bg-\(--netural-gray-scale-white\).h-screen.flex > div.flex-1.overflow-hidden > div > main > div > div > div > div > div > div.flex-1.flex.flex-col > div > div.flex.justify-between.items-center.px-36.h-12\.25 > div.flex.gap-2 > button:nth-child(2)"
+center_info_xpath = "//p[normalize-space()='센터 정보']"
+center_kiosk_notice_xpath = "//p[normalize-space()='키오스크 공지']"
 kiosk_notice_input = "#NoticeTitleInput"
+kiosk_notice_seve_xpath = "//button[normalize-space()='저장']"
 kiosk_toast_message = "키오스크 공지사항을 저장했어요."
-kiosk_notice_seve_selector = "body > div.relative.bg-\(--netural-gray-scale-white\).h-screen.flex > div.flex-1.overflow-hidden > div > main > div > div > div > div > div > div.flex-1.flex.flex-col > div > div.flex.flex-col.h-full > div > div > div > div > div.flex.justify-end.mt-2 > button"
-app_notice_selector = "body > div.relative.bg-\(--netural-gray-scale-white\).h-screen.flex > div.flex-1.overflow-hidden > div > main > div > div > div > div > div > div.flex-1.flex.flex-col > div > div.flex.justify-between.items-center.px-36.h-12\.25 > div > button:nth-child(1)"
-app_notice_create_selector = "body > div.relative.bg-\(--netural-gray-scale-white\).h-screen.flex > div.flex-1.overflow-hidden > div > main > div > div > div > div > div > div.flex-1.flex.flex-col > footer > a > button"
+app_notice_xpath = "//p[normalize-space()='회원 앱 공지']"
+app_notice_create_xpath = "//button[normalize-space()='게시물 작성']"
 app_notice_create_title_input = "#NoticeTitleInput"
 app_create_textarea_input = "#create-notice > div.mt-4 > div > textarea"
-app_notice_save_selector = "body > div.relative.bg-\(--netural-gray-scale-white\).h-screen.flex > div.flex-1.overflow-hidden > div > main > div > div > div > div > div > footer > div > button.flex.justify-center.items-center.rounded-lg.duration-300.as-btn-primary-bg-default.as-btn-text-default.hover\:as-btn-primary-bg-hover.focus\:as-btn-primary-bg-focused.disabled\:as-btn-primary-bg-disabled.disabled\:cursor-not-allowed.font-bold.max-w-68\.25.h-13.w-62"
+app_notice_save_xpath = "//button[normalize-space()='게시물 등록']"
 app_save_confirm_xpath = "//button[normalize-space()='등록']"
 app_notice_toast_message = "게시물을 공지사항으로 등록했어요."
+app_notice_target_title_xpath = "//td[normalize-space()='검증 후 삭제']"
+app_notice_delete_xpath = "//p[normalize-space()='삭제']"
+app_notice_del_confirm_xpath = "//button[normalize-space()='게시물 삭제']"
+app__del_toast_message = "게시물을 삭제했어요."
 # 공지사항 탭 동작
 def center_info_notice():
     global wait_count
     try:
         wait_count += 1
         WebDriverWait(driver, 10).until(
-            EC.presence_of_all_elements_located((By.CSS_SELECTOR, center_info_selector)) #사이드 메뉴 - 센터 정보 탭 선택
+            EC.presence_of_all_elements_located((By.XPATH, center_info_xpath)) #사이드 메뉴 - 센터 정보 탭 선택
         )
-        center = driver.find_element(By.CSS_SELECTOR, center_info_selector)
+        center = driver.find_element(By.XPATH, center_info_xpath)
         center.click()
         print("센터 정보 탭 선택 완료")
         time.sleep(1)
 
         wait_count += 1
         WebDriverWait(driver, 10).until(
-            EC.presence_of_all_elements_located((By. CSS_SELECTOR, center_kiosk_notice_selector)) #센터 정보 - 키오스크 공지 탭 선택
+            EC.presence_of_all_elements_located((By.XPATH, center_kiosk_notice_xpath)) #센터 정보 - 키오스크 공지 탭 선택
         )
-        kiosk_notice = driver.find_element(By. CSS_SELECTOR, center_kiosk_notice_selector)
+        kiosk_notice = driver.find_element(By.XPATH, center_kiosk_notice_xpath)
         kiosk_notice.click()
         print("키오스크 공지 탭 선택 완료")
         time.sleep(1)
@@ -222,9 +226,9 @@ def center_info_notice():
 
         wait_count += 1
         WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, kiosk_notice_seve_selector)) # 키오스크 공지 - 저장
+            EC.presence_of_element_located((By.XPATH, kiosk_notice_seve_xpath)) # 키오스크 공지 - 저장
         )
-        kiosk_notice_save = driver.find_element(By.CSS_SELECTOR, kiosk_notice_seve_selector)
+        kiosk_notice_save = driver.find_element(By.XPATH, kiosk_notice_seve_xpath)
         kiosk_notice_save.click()
         print("키오스크 공지사항 저장 완료")
         verify_toast_message(kiosk_toast_message)
@@ -232,18 +236,18 @@ def center_info_notice():
 
         wait_count += 1
         WebDriverWait(driver, 10).until(
-            EC.presence_of_all_elements_located((By. CSS_SELECTOR, app_notice_selector)) #회원 앱 공지 선택
+            EC.presence_of_all_elements_located((By.XPATH, app_notice_xpath)) #회원 앱 공지 선택
         )
-        app_notice = driver.find_element(By. CSS_SELECTOR, app_notice_selector)
+        app_notice = driver.find_element(By.XPATH, app_notice_xpath)
         app_notice.click()
         print("회원 앱 공지 선택 완료")
         time.sleep(1)
 
         wait_count += 1
         WebDriverWait(driver, 10).until(
-            EC.presence_of_all_elements_located((By. CSS_SELECTOR, app_notice_create_selector)) #게시물 작성 선택
+            EC.presence_of_all_elements_located((By.XPATH, app_notice_create_xpath)) #게시물 작성 선택
         )
-        app_notice_create = driver.find_element(By. CSS_SELECTOR, app_notice_create_selector)
+        app_notice_create = driver.find_element(By.XPATH, app_notice_create_xpath)
         app_notice_create.click()
         print("회원 앱 공지 _ 게시물 작성 선택 완료")
         time.sleep(1)
@@ -254,7 +258,7 @@ def center_info_notice():
         )
         title_field = driver.find_element(By.CSS_SELECTOR, app_notice_create_title_input) 
         title_field.clear()
-        title_field.send_keys("센터 공지 작성")
+        title_field.send_keys("검증 후 삭제")
         textarea_field = driver.find_element(By.CSS_SELECTOR, app_create_textarea_input)
         textarea_field.clear()
         textarea_field.send_keys("본문 내용 입력")
@@ -263,9 +267,9 @@ def center_info_notice():
 
         wait_count += 1
         WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, app_notice_save_selector)) # 센터 공지 - 저장
+            EC.presence_of_element_located((By.XPATH, app_notice_save_xpath)) # 센터 공지 - 저장
         )
-        app_notice_save = driver.find_element(By.CSS_SELECTOR, app_notice_save_selector)
+        app_notice_save = driver.find_element(By.XPATH, app_notice_save_xpath)
         app_notice_save.click()
         print("센터 공지사항 저장 선택 완료")
         time.sleep(1)
@@ -278,6 +282,45 @@ def center_info_notice():
         app_save_confirm.click()
         print("센터 공지사항 저장 선택 완료")
         verify_toast_message(app_notice_toast_message)
+        time.sleep(1)
+
+        wait_count += 1
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.XPATH, app_notice_target_title_xpath)) # 등록한 게시물 노출 여부 확인
+        )
+        target_notice = driver.find_element(By.XPATH, app_notice_target_title_xpath)
+        if target_notice:
+            print("✅ 등록한 공지사항 게시물 노출 확인")
+        else:
+            print("❌ 등록한 공지사항 게시물 노출 실패")
+        time.sleep(1)
+
+        wait_count += 1
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.XPATH, app_notice_target_title_xpath)) # 등록한 게시물 선택
+        )
+        target_notice_select = driver.find_element(By.XPATH, app_notice_target_title_xpath)
+        target_notice_select.click()
+        print("등록한 공지사항 게시물 선택 완료")
+        time.sleep(1)
+
+        wait_count += 1
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.XPATH, app_notice_delete_xpath)) # 등록한 게시물 삭제 선택
+        )
+        app_notice_delete = driver.find_element(By.XPATH, app_notice_delete_xpath)
+        app_notice_delete.click()
+        print("등록한 공지사항 게시물 삭제 선택 완료")
+        time.sleep(1)
+
+        wait_count += 1
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.XPATH, app_notice_del_confirm_xpath)) # 삭제 확인 팝업 - 토스트 메시지 검증
+        )
+        del_confirm = driver.find_element(By.XPATH, app_notice_del_confirm_xpath)
+        del_confirm.click()
+        print("게시물 삭제 확인 선택 완료")
+        verify_toast_message(app__del_toast_message)
         time.sleep(1)
 
         # #이전 화면 이동
@@ -294,9 +337,9 @@ time.sleep(1)
 
 # region [센터 정보 : 센터 정보]
 center_information_selector = "body > div.relative.bg-\(--netural-gray-scale-white\).h-screen.flex > div.flex-1.overflow-hidden > div > main > div > div > div > div > div > div.w-full.flex.justify-between.items-center.pt-5.pb-2\.5.px-10 > ul > li:nth-child(2)"
-center_info_update_selector = "body > div.relative.bg-\(--netural-gray-scale-white\).h-screen.flex > div.flex-1.overflow-hidden > div > main > div > div > div > div > div > div.flex-1.flex.flex-col > footer > a > button"
-center_info_save_selector = "body > div.relative.bg-\(--netural-gray-scale-white\).h-screen.flex > div.flex-1.overflow-hidden > div > main > div > div > div > div > div > footer > button"
-center_info_notice_selector = "body > div.relative.bg-\(--netural-gray-scale-white\).h-screen.flex > div.flex-1.overflow-hidden > div > main > div > div > div > div > div > div.w-full.flex.justify-between.items-center.pt-5.pb-2\.5.px-10 > ul > li:nth-child(1) > button"
+center_info_update_xpath = "//button[normalize-space()='내용 수정']"
+center_info_save_xpath = "//button[normalize-space()='저장']"
+center_info_notice_xpath = "//p[normalize-space()='공지사항']"
 #센터 정보 탭 동작
 def center_information():
     global wait_count
@@ -312,27 +355,27 @@ def center_information():
 
         wait_count += 1
         WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, center_info_update_selector)) #내용 수정 버튼 선택
+            EC.presence_of_element_located((By.XPATH, center_info_update_xpath)) #내용 수정 버튼 선택
         )
-        center_info_update_select = driver.find_element(By.CSS_SELECTOR, center_info_update_selector)
+        center_info_update_select = driver.find_element(By.XPATH, center_info_update_xpath)
         center_info_update_select.click()
         print("내용 수정 선택 완료")
         time.sleep(1)
 
         wait_count += 1
         WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, center_info_save_selector))
+            EC.presence_of_element_located((By.XPATH, center_info_save_xpath))
         )
-        center_info_save_select = driver.find_element(By.CSS_SELECTOR, center_info_save_selector)
+        center_info_save_select = driver.find_element(By.XPATH, center_info_save_xpath)
         center_info_save_select.click()
         print("저장 선택 완료")
         time.sleep(1)
 
         wait_count += 1
         WebDriverWait(driver, 10).until(
-            EC.presence_of_all_elements_located((By. CSS_SELECTOR, center_info_notice_selector)) #센터 정보 : 공지사항 탭 선택
+            EC.presence_of_all_elements_located((By.XPATH, center_info_notice_xpath)) #센터 정보 : 공지사항 탭 선택
         )
-        center_info_notice = driver.find_element(By. CSS_SELECTOR, center_info_notice_selector)
+        center_info_notice = driver.find_element(By.XPATH, center_info_notice_xpath)
         center_info_notice.click()
         print("공지 사항 선택 완료")
         time.sleep(1)
@@ -343,8 +386,477 @@ center_information()
 time.sleep(1)
 # endregion
 
+# region [센터 정보 : 회원]
+member_xpath = "//p[normalize-space()='회원']"
+member_information_selector = "body > div.relative.flex.bg-\[--netural-gray-scale-white\] > div > main > div.w-full.px-10.flex.justify-between.items-center.pt-5.pb-2\.5 > ul > li:nth-child(1) > button"
+member_info_check_selector = "body > div.relative.flex.bg-\[--netural-gray-scale-white\] > div > main > div.flex-1.flex.flex-col.gap-4.px-10.pb-10 > table > tbody > tr:nth-child(1)"
+member_revise_selector = "body > div.relative.flex.bg-\[--netural-gray-scale-white\] > div > main > div.flex.flex-col.px-10 > div > div.flex.col-span-2.gap-5.pt-6 > div.flex.flex-col.gap-4 > a > button"
+member_revise_save_selector = "body > div.relative.flex.bg-\[--netural-gray-scale-white\] > div > main > footer > div > button"
+member_create_selector = "body > div.relative.flex.bg-\[--netural-gray-scale-white\] > div > main > footer > a > button"
+member_create_select_selector = "body > div.flex.justify-center.items-center.fixed.inset-0.z-50.backdrop-filter.placeholder\:outline-none.focus\:outline-none.cursor-auto.duration-300.h-\[100svh\].rounded-md.bg-black\/60.backdrop-blur-sm > div > div > div > div.flex-auto.items-center > div > div:nth-child(1) > a"
+member_datail_name_selector = "#username"
+member_datail_mobile_selector = "#mobileNumber"
+member_dropdown_selector = 'button.inline-flex.justify-between.w-full.bg-transparent'
+member_dropdown_option_xpath = "//button[text()='워크인']"
+item_add_selector = "#member-detail-create > div.flex.flex-col.gap-4 > div > div > a > button"
+item_add_save_selector = "body > div.flex.justify-center.items-center.fixed.inset-0.z-50.backdrop-filter.placeholder\:outline-none.focus\:outline-none.cursor-auto.duration-300.h-\[100svh\].bg-black\/60.backdrop-blur-sm > div > div > div > div > main > div > button"
+item_tab_GX_selector = "#member-detail-create > div.flex.flex-col.gap-4 > div > ul > li:nth-child(2) > button > p"
+item_tab_PT_selector = "#member-detail-create > div.flex.flex-col.gap-4 > div > ul > li:nth-child(3) > button > p"
+item_tab_locker_selector = "#member-detail-create > div.flex.flex-col.gap-4 > div > ul > li:nth-child(4) > button > p"
+item_tab_equipment_selector = "#member-detail-create > div.flex.flex-col.gap-4 > div > ul > li:nth-child(5) > button > p"
+member_save_selector = "body > div.relative.flex.bg-\[--netural-gray-scale-white\] > div > main > footer > div > button"
+member_secession_selector = "body > div.relative.flex.bg-\[--netural-gray-scale-white\] > div > main > div.w-full.px-10.flex.justify-between.items-center.pt-5.pb-2\.5 > ul > li:nth-child(2) > button"
+member_refund_selector = "body > div.relative.flex.bg-\[--netural-gray-scale-white\] > div > main > div.w-full.px-10.flex.justify-between.items-center.pt-5.pb-2\.5 > ul > li:nth-child(3) > button"
+member_refund_history_selector = "body > div.relative.flex.bg-\[--netural-gray-scale-white\] > div > main > div.w-full.px-10.flex.justify-between.items-center.pt-5.pb-2\.5 > ul.flex.h-10.p-\[0\.3125rem\].gap-\[0\.875rem\].bg-\[--netural-gray-scale-100\].rounded-lg > li:nth-child(2) > button"
+member_group_selector = "body > div.relative.flex.bg-\[--netural-gray-scale-white\] > div > main > div.w-full.px-10.flex.justify-between.items-center.pt-5.pb-2\.5 > ul > li:nth-child(4) > button"
+member_history_selector = "body > div.relative.flex.bg-\[--netural-gray-scale-white\] > div > main > div.w-full.px-10.flex.justify-between.items-center.pt-5.pb-2\.5 > ul > li:nth-child(5) > button"
+pause_history_selector = "body > div.relative.flex.bg-\[--netural-gray-scale-white\] > div > main > div.w-full.px-10.flex.justify-between.items-center.pt-5.pb-2\.5 > ul > li:nth-child(6) > button"
+item_add_confirm_selector = "#member-payment > div.flex.justify-center.items-center.fixed.inset-0.z-50.bg-black\/10.backdrop-filter.placeholder\:outline-none.focus\:outline-none.cursor-auto.duration-300 > div > div > div > div > div.h-\[3\.125rem\].flex.items-center.self-stretch > button:nth-child(3)"
 
 
+def member_admin():
+    global wait_count # 글로벌 변수 선언
+    try:
+        #회원 관리 선택 호출 대기
+        wait_count += 1
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_all_elements_located((By.XPATH, member_xpath))
+        )
+        member = driver.find_element(By.XPATH, member_xpath)
+        member.click()
+        print("회원 관리 선택 완료")
+
+        #회원 관리 선택 후 딜레이 2초
+        time.sleep(1)
+        
+        #회원 등록 선택 호출 대기
+        wait_count += 1
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, member_create_selector))
+        )
+        member_create = driver.find_element(By.CSS_SELECTOR, member_create_selector)
+        member_create.click()
+        print("회원 관리_회원 등록 선택 완료")
+
+        #회원 등록 선택 후 딜레이 2초
+        time.sleep(1)
+
+        #상세 등록 선택 호출 대기
+        wait_count += 1
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, member_create_select_selector))
+        )
+        member_datail = driver.find_element(By.CSS_SELECTOR, member_create_select_selector)
+        member_datail.click()
+        print("회원 관리_회원 등록_상세 등록 선택 완료")
+        
+        #상세 등록 선택 후 딜레이 2초
+        time.sleep(1)
+
+        # 이름 입력 호출 대기 및 값 입력
+        wait_count += 2
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, member_datail_name_selector))
+        )
+        name_field = driver.find_element(By.CSS_SELECTOR, member_datail_name_selector)
+        name_field.clear()
+        name_field.send_keys("자동화검증회원") 
+        print("이름 입력 완료")
+
+        # 비밀번호 입력 호출 대기 및 값 입력
+        mobile_No_field = driver.find_element(By.CSS_SELECTOR, member_datail_mobile_selector)
+        mobile_No_field.clear()
+        random_phone = generate_random_member_number()
+        mobile_No_field.send_keys(random_phone)
+        print("휴대전화번호 입력 완료")
+
+        # 아이디, 비밀번호 입력 후 2초 딜레이
+        time.sleep(1)
+
+        #방문 경로 드롭다운 선택 호출 대기
+        wait_count += 1
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, member_dropdown_selector))
+        )
+        member_dropdown = driver.find_element(By.CSS_SELECTOR, member_dropdown_selector)
+        member_dropdown.click()
+        print("방문 경로 드롭다운 선택 완료")
+
+        #회원 관리 선택 후 딜레이 2초
+        time.sleep(1)
+
+        #방문 경로 드롭다운_특정값 선택 호출 대기
+        wait_count += 1
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_all_elements_located((By.XPATH, member_dropdown_option_xpath))
+        )
+        member_dropdown_option = driver.find_element(By.XPATH, member_dropdown_option_xpath)
+        member_dropdown_option.click()
+        print("드롭다운 워크인 선택 완료")
+
+        #방문 경로 선택 후 딜레이 2초
+        time.sleep(1)
+
+        #회원권 상품 등록 선택 호출 대기
+        wait_count += 1
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, item_add_selector))
+        )
+        item_add = driver.find_element(By.CSS_SELECTOR, item_add_selector)
+        item_add.click()
+        print("상품 등록 선택 완료")
+
+        #회원권 상품 등록 선택 후 딜레이 2초
+        time.sleep(1)
+
+        #회원권 상품 등록 저장 선택 호출 대기
+        wait_count += 1
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, item_add_save_selector))
+        )
+        item_add_save = driver.find_element(By.CSS_SELECTOR, item_add_save_selector)
+        item_add_save.click()
+        print("상품 저장 선택 완료")
+
+        #상품 선택 후 선택 후 딜레이 2초
+        time.sleep(1)
+
+        #상품 등록 완료 확인 팝업 _ 닫기 선택
+        wait_count += 1
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, item_add_confirm_selector))
+        )
+        item_add_confirm = driver.find_element(By.CSS_SELECTOR, item_add_confirm_selector)
+        item_add_confirm.click()
+        print("닫기 선택 완료")
+        time.sleep(1)
+
+  
+#그룹 수업 탭 선택 호출 대기
+        wait_count += 1
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, item_tab_GX_selector))
+        )
+        item_tab_GX = driver.find_element(By.CSS_SELECTOR, item_tab_GX_selector)
+        item_tab_GX.click()
+        print("그룹 수업 탭 선택 완료")
+
+        # 그룹 수업 탭 선택 후 딜레이 2초
+        time.sleep(1)
+
+        #그룹 수업 상품 등록 선택 호출 대기
+        wait_count += 1
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, item_add_selector))
+        )
+        item_add = driver.find_element(By.CSS_SELECTOR, item_add_selector)
+        item_add.click()
+        print("상품 등록 선택 완료")
+
+        #그룹 수업 상품 등록 선택 후 딜레이 2초
+        time.sleep(1)
+
+        #그룹 수업 상품 등록 저장 선택 호출 대기
+        wait_count += 1
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, item_add_save_selector))
+        )
+        item_add_save = driver.find_element(By.CSS_SELECTOR, item_add_save_selector)
+        item_add_save.click()
+        print("상품 저장 선택 완료")
+
+        #상품 선택 후 선택 후 딜레이 2초
+        time.sleep(1)
+
+        #상품 등록 완료 확인 팝업 _ 닫기 선택
+        wait_count += 1
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, item_add_confirm_selector))
+        )
+        item_add_confirm = driver.find_element(By.CSS_SELECTOR, item_add_confirm_selector)
+        item_add_confirm.click()
+        print("닫기 선택 완료")
+
+
+        #개인 레슨 탭 선택 호출 대기
+        wait_count += 1
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, item_tab_PT_selector))
+        )
+        item_tab_PT = driver.find_element(By.CSS_SELECTOR, item_tab_PT_selector)
+        item_tab_PT.click()
+        print("개인 레슨 탭 선택 완료")
+
+        # 개인레슨 탭 선택 후 딜레이 2초
+        time.sleep(1)
+
+        #개인 레슨 상품 등록 선택 호출 대기
+        wait_count += 1
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, item_add_selector))
+        )
+        item_add = driver.find_element(By.CSS_SELECTOR, item_add_selector)
+        item_add.click()
+        print("상품 등록 선택 완료")
+
+        #개인 레슨 상품 등록 선택 후 딜레이 2초
+        time.sleep(1)
+
+        #개인 레슨 상품 등록 저장 선택 호출 대기
+        wait_count += 1
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, item_add_save_selector))
+        )
+        item_add_save = driver.find_element(By.CSS_SELECTOR, item_add_save_selector)
+        item_add_save.click()
+        print("상품 저장 선택 완료")
+
+        #상품 선택 후 선택 후 딜레이 2초
+        time.sleep(1)
+
+        #상품 등록 완료 확인 팝업 _ 닫기 선택
+        wait_count += 1
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, item_add_confirm_selector))
+        )
+        item_add_confirm = driver.find_element(By.CSS_SELECTOR, item_add_confirm_selector)
+        item_add_confirm.click()
+        print("닫기 선택 완료")
+
+        #락커 상품 탭 선택 호출 대기
+        wait_count += 1 
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, item_tab_locker_selector))
+        )
+        item_tab_locker = driver.find_element(By.CSS_SELECTOR, item_tab_locker_selector)
+        item_tab_locker.click()
+        print("락커 상품 탭 선택 완료")
+
+        #락커 상품 탭 선택 후 딜레이 2초
+        time.sleep(1)
+
+        #락커 상품 상품 등록 선택 호출 대기
+        wait_count += 1
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, item_add_selector))
+        )
+        item_add = driver.find_element(By.CSS_SELECTOR, item_add_selector)
+        item_add.click()
+        print("상품 등록 선택 완료")
+
+        #락커 상품 상품 등록 선택 후 딜레이 2초
+        time.sleep(1)
+
+        #락커 상품 상품 등록 저장 선택 호출 대기
+        wait_count += 1
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, item_add_save_selector))
+        )
+        item_add_save = driver.find_element(By.CSS_SELECTOR, item_add_save_selector)
+        item_add_save.click()
+        print("상품 저장 선택 완료")
+
+        #상품 선택 후 선택 후 딜레이 2초
+        time.sleep(1)
+
+        #상품 등록 완료 확인 팝업 _ 닫기 선택
+        wait_count += 1
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, item_add_confirm_selector))
+        )
+        item_add_confirm = driver.find_element(By.CSS_SELECTOR, item_add_confirm_selector)
+        item_add_confirm.click()
+        print("닫기 선택 완료")
+        time.sleep(1)
+
+        #운동 용품 탭 선택 호출 대기 
+        wait_count += 1
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, item_tab_equipment_selector))
+        )
+        item_tab_equipment = driver.find_element(By.CSS_SELECTOR, item_tab_equipment_selector)
+        item_tab_equipment.click()
+        print("운동 용품 탭 선택 완료")
+
+        #운동 용품 탭 선택 후 딜레이 2초
+        time.sleep(1)
+
+        #운동 용품 상품 등록 선택 호출 대기
+        wait_count += 1
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, item_add_selector))
+        )
+        item_add = driver.find_element(By.CSS_SELECTOR, item_add_selector)
+        item_add.click()
+        print("상품 등록 선택 완료")
+
+        #운동 용품 등록 선택 후 딜레이 2초
+        time.sleep(1)
+
+        #운동 용품 등록 저장 선택 호출 대기
+        wait_count += 1
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, item_add_save_selector))
+        )
+        item_add_save = driver.find_element(By.CSS_SELECTOR, item_add_save_selector)
+        item_add_save.click()
+        print("상품 저장 선택 완료")
+
+        #상품 선택 후 선택 후 딜레이 2초
+        time.sleep(1)
+
+        #상품 등록 완료 확인 팝업 _ 닫기 선택
+        wait_count += 1
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, item_add_confirm_selector))
+        )
+        item_add_confirm = driver.find_element(By.CSS_SELECTOR, item_add_confirm_selector)
+        item_add_confirm.click()
+        print("닫기 선택 완료")
+        time.sleep(1)
+
+        #회원 등록 버튼 호출 대기
+        wait_count += 1
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, member_save_selector))
+        )
+        member_save = driver.find_element(By.CSS_SELECTOR, member_save_selector)
+        member_save.click()
+        print("회원 등록 완료")
+
+        #회원 등록 선택 후 선택 후 딜레이 2초
+        time.sleep(1)
+
+        #탈퇴 처리 탭 호출 대기
+        wait_count += 1
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, member_secession_selector))
+        )
+        member_secession = driver.find_element(By.CSS_SELECTOR, member_secession_selector)
+        member_secession.click()
+        print("회원 삭제 탭 선택 완료")
+
+        #탈퇴 처리 탭 선택 후 딜레이 2초
+        time.sleep(1)
+
+        #환불 처리 탭 호출 대기
+        wait_count += 1
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, member_refund_selector))
+        )
+        member_refund = driver.find_element(By.CSS_SELECTOR, member_refund_selector)
+        member_refund.click()
+        print("환불 처리 탭 선택 완료")
+
+        #환불 처리 탭 선택 후 딜레이 2초
+        time.sleep(1)
+
+        #환불 처리_환불 내역 탭 호출 대기
+        wait_count += 1
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, member_refund_history_selector))
+        )
+        member_refund_history = driver.find_element(By.CSS_SELECTOR, member_refund_history_selector)
+        member_refund_history.click()
+        print("환불 처리_환불 내역 탭 선택 완료")
+
+        #환불 처리_환불 내역 탭 선택 후 딜레이 2초
+        time.sleep(1)
+
+        #단체 연장 탭 호출 대기
+        wait_count += 1
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, member_group_selector))
+        )
+        member_group = driver.find_element(By.CSS_SELECTOR, member_group_selector)
+        member_group.click()
+        print("단체 연장 탭 선택 완료")
+
+        #단체 연장 탭 선택 후 딜레이 2초
+        time.sleep(1)
+
+        #정지 기록 탭 호출 대기
+        wait_count += 1
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, member_history_selector))
+        )
+        member_history = driver.find_element(By.CSS_SELECTOR, member_history_selector)
+        member_history.click()
+        print("정지 기록 탭 선택 완료")
+
+        #정지 기록 탭 선택 후 딜레이 2초
+        time.sleep(1)
+
+        #수정 기록 탭 호출 대기
+        wait_count += 1
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, pause_history_selector))
+        )
+        pause_history = driver.find_element(By.CSS_SELECTOR, pause_history_selector)
+        pause_history.click()
+        print("수정 기록 탭 선택 완료")
+
+        #정지 기록 탭 선택 후 딜레이 2초
+        time.sleep(1)
+
+        #회원 정보 탭 호출 대기
+        wait_count += 1
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_all_elements_located((By. CSS_SELECTOR, member_information_selector))
+        )
+        member_information = driver.find_element(By. CSS_SELECTOR, member_information_selector)
+        member_information.click()
+        print("회원 정보 탭 선택 완료")
+
+        #회원 정보 탭 선택 후 딜레이 2초
+        time.sleep(1)
+
+        #회원 정보_정보 조회 호출 대기
+        wait_count += 1
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_all_elements_located((By. CSS_SELECTOR, member_info_check_selector))
+        )
+        member_info_check = driver.find_element(By. CSS_SELECTOR, member_info_check_selector)
+        member_info_check.click()
+        print("회원 정보_정보 조회 선택 완료")
+
+        #회원 정보_정보 조회 선택 후 딜레이 2초
+        time.sleep(1)
+
+        #회원 정보 수정 호출 대기
+        wait_count += 1
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_all_elements_located((By. CSS_SELECTOR, member_revise_selector))
+        )
+        member_revise = driver.find_element(By. CSS_SELECTOR, member_revise_selector)
+        member_revise.click()
+        print("회원 수정 선택 완료")
+
+        #회원 정보 수정 선택 후 딜레이 2초
+        time.sleep(1)
+
+        #회원 정보 수정 저장 호출 대기
+        wait_count += 1
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_all_elements_located((By. CSS_SELECTOR, member_revise_save_selector))
+        )
+        member_revise_save = driver.find_element(By. CSS_SELECTOR, member_revise_save_selector)
+        member_revise_save.click()
+        print("회원 정보 수정 저장 완료")
+
+        #회원 정보 수정 저장 후 딜레이 2초
+        time.sleep(1)
+
+
+    except (NoSuchElementException, TimeoutException):
+        print("!!!!! 회원 관리 관련 오류 발생 !!!!!")
+
+member_admin()
+time.sleep(1)
+
+
+
+# endregion
 
 
 # region [자동화 종료 전 최종 검증 개수 및 카운트다운]
